@@ -1,0 +1,48 @@
+name: Gyre
+options:
+  bundleIdPrefix: com.utkarsh
+  deploymentTarget:
+    iOS: "27.0"
+  xcodeVersion: "27.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: CY7YRBR476
+    CODE_SIGN_STYLE: Automatic
+targets:
+  Gyre:
+    type: application
+    platform: iOS
+    sources: [Gyre]
+    info:
+      path: Gyre/Info.plist
+      properties:
+        CFBundleDisplayName: Gyre
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSMotionUsageDescription: "Gyre reads the barometer so the air inside the bubble can match the air pressure around you."
+        NSBluetoothAlwaysUsageDescription: "Gyre listens for nearby Bluetooth radio signals to draw them around the bubble. It never connects to or identifies devices."
+        NSCameraUsageDescription: "Gyre uses the camera to place the gyroscope bubble in your room in AR."
+        NSMicrophoneUsageDescription: "Gyre listens to draw an oscilloscope in the bubble and, if you turn up Listen, to let sound move the gyroscope. Nothing is recorded or kept."
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIUserInterfaceStyle: Dark
+        UIStatusBarHidden: true
+        CADisableMinimumFrameDurationOnPhone: true
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.entertainment
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.utkarsh.gyre
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        MTL_FAST_MATH: YES
+        SUPPORTS_MACCATALYST: NO

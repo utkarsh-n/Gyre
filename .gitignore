@@ -1,0 +1,41 @@
+
+
+# Safe private source import exclusions
+
+# Local credentials and signing material
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.key
+*.pem
+*.mobileprovision
+*.provisionprofile
+Local.xcconfig
+Secrets.xcconfig
+.claude/
+.codex/
+
+# Machine state, build outputs, and local test artifacts
+.DS_Store
+.build/
+.swiftpm/
+.derivedData/
+.deviceDerivedData/
+DerivedData*/
+build/
+build-device/
+build-watch/
+xcuserdata/
+*.xcuserstate
+*.xcresult/
+*.xcarchive/
+*.ipa
+*.app/
+*.dSYM/
+*.log
+__pycache__/
+
+# Local physics harness output
+/Tools/physcheck/out/

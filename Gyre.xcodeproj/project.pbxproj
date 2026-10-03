@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		14DF6621DBE452BDC4F2B669 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E46CC568701FDA60DACC660 /* Console.swift */; };
+		1EF6E3FD8ADA1E6DEA563CCB /* GyroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B5CC784ADDEDDD2D4F0C79 /* GyroModel.swift */; };
+		2A977C5D33D5AA0FDF357A82 /* InfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C81952F23AD21899BDB2F2A /* InfoSheet.swift */; };
+		2FCCE3C3E401B2932EEC4136 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF16E0055CB87E3AA099AD2 /* ContentView.swift */; };
+		38C6E00FC3F31B70D1CCC20E /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84527C274EDCEC3D3603A442 /* TopBar.swift */; };
+		3F472CC100DC9225E8B067C4 /* HoloRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CA1334DDDEC947AB29AD55 /* HoloRenderer.swift */; };
+		441A91C9204B25B4E0AF00DC /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7A9C0CA5E6930DEB3CF4C3 /* Haptics.swift */; };
+		4685FE0C08304A8B35710AC2 /* GyreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8356DF51CD2BA398A37ECA73 /* GyreApp.swift */; };
+		7AE9B13E1A7B830F19EF8861 /* GyroSim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A3E41742D3D955829BEF0E /* GyroSim.swift */; };
+		82F908271AB9FFE1D8120DD5 /* MathUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6801867536D14A764D161946 /* MathUtil.swift */; };
+		9A28862B0425A3AF6FFA5057 /* Holo.metal in Sources */ = {isa = PBXBuildFile; fileRef = C44E1BA0CB8E1CDEDB6605B5 /* Holo.metal */; };
+		AD48CE3F3CACA54E2A65EC4E /* GlassKnob.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E373B8146EE242E3BB503E /* GlassKnob.swift */; };
+		D65A1B32754E95A070863FFA /* BubbleWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA09525C929522A36FF6DFBD /* BubbleWorld.swift */; };
+		D69240D00D9D863594461C4E /* HumSynth.swift in Sources */ = {isa = PBXBuildFile; fileRef = F265EFF4B941A91BDA4F5C94 /* HumSynth.swift */; };
+		D8D7750F5B27983227763841 /* HoloScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFCA0B8A12EBDDF78D7DC5D /* HoloScene.swift */; };
+		ED3689AE70C318369C7243A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7CE12C371DD322ACBEF41C5F /* Assets.xcassets */; };
+		F7884D17D08B53DF99BA0D06 /* Knobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7541C0DDAB2737A7D9F8DAC9 /* Knobs.swift */; };
+		FB3FC703FF94EA8DF413FFB9 /* MotionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CB65A85DE8EF95CAAF232C /* MotionSource.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A7A9C0CA5E6930DEB3CF4C3 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		0BFCA0B8A12EBDDF78D7DC5D /* HoloScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoloScene.swift; sourceTree = "<group>"; };
+		1C81952F23AD21899BDB2F2A /* InfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSheet.swift; sourceTree = "<group>"; };
+		26CB65A85DE8EF95CAAF232C /* MotionSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSource.swift; sourceTree = "<group>"; };
+		3EF16E0055CB87E3AA099AD2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		46CA1334DDDEC947AB29AD55 /* HoloRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoloRenderer.swift; sourceTree = "<group>"; };
+		6801867536D14A764D161946 /* MathUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtil.swift; sourceTree = "<group>"; };
+		6E7B45547B1F0E4A0F1C95C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		74A3E41742D3D955829BEF0E /* GyroSim.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GyroSim.swift; sourceTree = "<group>"; };
+		7541C0DDAB2737A7D9F8DAC9 /* Knobs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Knobs.swift; sourceTree = "<group>"; };
+		7CE12C371DD322ACBEF41C5F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7DD8F8C58B416727D55F879A /* Gyre.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Gyre.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8356DF51CD2BA398A37ECA73 /* GyreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GyreApp.swift; sourceTree = "<group>"; };
+		84527C274EDCEC3D3603A442 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
+		8E46CC568701FDA60DACC660 /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
+		C44E1BA0CB8E1CDEDB6605B5 /* Holo.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Holo.metal; sourceTree = "<group>"; };
+		E4B5CC784ADDEDDD2D4F0C79 /* GyroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GyroModel.swift; sourceTree = "<group>"; };
+		E7E373B8146EE242E3BB503E /* GlassKnob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassKnob.swift; sourceTree = "<group>"; };
+		EA09525C929522A36FF6DFBD /* BubbleWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWorld.swift; sourceTree = "<group>"; };
+		F265EFF4B941A91BDA4F5C94 /* HumSynth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumSynth.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0BC2AFFD7091D7E8582702BB /* Gyre */ = {
+			isa = PBXGroup;
+			children = (
+				6E7B45547B1F0E4A0F1C95C9 /* Info.plist */,
+				D727190DA5526CBB239EF0D8 /* App */,
+				23B156CAAC22B55BA073B5DE /* Feedback */,
+				F9A82C1D5122660AEA42F520 /* Model */,
+				BBCD8B3F1F837F4D0F167562 /* Physics */,
+				8491378D075CBC6E0F23C4E2 /* Render */,
+				49C6EADA9698CB88F5C538BD /* Resources */,
+				29DF6DAC36EC1D45A9455A04 /* Sensors */,
+				658A93CEF049508CEA3762C9 /* UI */,
+			);
+			path = Gyre;
+			sourceTree = "<group>";
+		};
+		23B156CAAC22B55BA073B5DE /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				0A7A9C0CA5E6930DEB3CF4C3 /* Haptics.swift */,
+				F265EFF4B941A91BDA4F5C94 /* HumSynth.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		29DF6DAC36EC1D45A9455A04 /* Sensors */ = {
+			isa = PBXGroup;
+			children = (
+				26CB65A85DE8EF95CAAF232C /* MotionSource.swift */,
+			);
+			path = Sensors;
+			sourceTree = "<group>";
+		};
+		49C6EADA9698CB88F5C538BD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7CE12C371DD322ACBEF41C5F /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		658A93CEF049508CEA3762C9 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				8E46CC568701FDA60DACC660 /* Console.swift */,
+				3EF16E0055CB87E3AA099AD2 /* ContentView.swift */,
+				E7E373B8146EE242E3BB503E /* GlassKnob.swift */,
+				1C81952F23AD21899BDB2F2A /* InfoSheet.swift */,
+				84527C274EDCEC3D3603A442 /* TopBar.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		8491378D075CBC6E0F23C4E2 /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				C44E1BA0CB8E1CDEDB6605B5 /* Holo.metal */,
+				46CA1334DDDEC947AB29AD55 /* HoloRenderer.swift */,
+				0BFCA0B8A12EBDDF78D7DC5D /* HoloScene.swift */,
+			);
+			path = Render;
+			sourceTree = "<group>";
+		};
+		8E13EE610EBE062B818079E5 = {
+			isa = PBXGroup;
+			children = (
+				0BC2AFFD7091D7E8582702BB /* Gyre */,
+				BDFE1D34EFD8B2A366ECC599 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BBCD8B3F1F837F4D0F167562 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				EA09525C929522A36FF6DFBD /* BubbleWorld.swift */,
+				74A3E41742D3D955829BEF0E /* GyroSim.swift */,
+				6801867536D14A764D161946 /* MathUtil.swift */,
+			);
+			path = Physics;
+			sourceTree = "<group>";
+		};
+		BDFE1D34EFD8B2A366ECC599 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7DD8F8C58B416727D55F879A /* Gyre.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D727190DA5526CBB239EF0D8 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				8356DF51CD2BA398A37ECA73 /* GyreApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F9A82C1D5122660AEA42F520 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4B5CC784ADDEDDD2D4F0C79 /* GyroModel.swift */,
+				7541C0DDAB2737A7D9F8DAC9 /* Knobs.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		74FBF2371620F7F9D1ADF660 /* Gyre */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CACE607F444C6597C7BEA5D /* Build configuration list for PBXNativeTarget "Gyre" */;
+			buildPhases = (
+				AB0AA24E27DC771554C61F72 /* Sources */,
+				9B2C909AF71AA878D6722885 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Gyre;
+			packageProductDependencies = (
+			);
+			productName = Gyre;
+			productReference = 7DD8F8C58B416727D55F879A /* Gyre.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A79885C8F935E104F0ECCA12 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					74FBF2371620F7F9D1ADF660 = {
+						DevelopmentTeam = CY7YRBR476;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B71B8E4EA2E7A8E6ED723088 /* Build configuration list for PBXProject "Gyre" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8E13EE610EBE062B818079E5;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BDFE1D34EFD8B2A366ECC599 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				74FBF2371620F7F9D1ADF660 /* Gyre */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9B2C909AF71AA878D6722885 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED3689AE70C318369C7243A4 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AB0AA24E27DC771554C61F72 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D65A1B32754E95A070863FFA /* BubbleWorld.swift in Sources */,
+				14DF6621DBE452BDC4F2B669 /* Console.swift in Sources */,
+				2FCCE3C3E401B2932EEC4136 /* ContentView.swift in Sources */,
+				AD48CE3F3CACA54E2A65EC4E /* GlassKnob.swift in Sources */,
+				4685FE0C08304A8B35710AC2 /* GyreApp.swift in Sources */,
+				1EF6E3FD8ADA1E6DEA563CCB /* GyroModel.swift in Sources */,
+				7AE9B13E1A7B830F19EF8861 /* GyroSim.swift in Sources */,
+				441A91C9204B25B4E0AF00DC /* Haptics.swift in Sources */,
+				9A28862B0425A3AF6FFA5057 /* Holo.metal in Sources */,
+				3F472CC100DC9225E8B067C4 /* HoloRenderer.swift in Sources */,
+				D8D7750F5B27983227763841 /* HoloScene.swift in Sources */,
+				D69240D00D9D863594461C4E /* HumSynth.swift in Sources */,
+				2A977C5D33D5AA0FDF357A82 /* InfoSheet.swift in Sources */,
+				F7884D17D08B53DF99BA0D06 /* Knobs.swift in Sources */,
+				82F908271AB9FFE1D8120DD5 /* MathUtil.swift in Sources */,
+				FB3FC703FF94EA8DF413FFB9 /* MotionSource.swift in Sources */,
+				38C6E00FC3F31B70D1CCC20E /* TopBar.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		075D60766FB78D95C26F362A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = CY7YRBR476;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		25936522822EA5DDC238D3B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Gyre/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.utkarsh.gyre;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6BCBBDE61D202FB7C49125F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Gyre/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.utkarsh.gyre;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		80234301B343C73C52F8FCA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = CY7YRBR476;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9CACE607F444C6597C7BEA5D /* Build configuration list for PBXNativeTarget "Gyre" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6BCBBDE61D202FB7C49125F2 /* Debug */,
+				25936522822EA5DDC238D3B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B71B8E4EA2E7A8E6ED723088 /* Build configuration list for PBXProject "Gyre" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				075D60766FB78D95C26F362A /* Debug */,
+				80234301B343C73C52F8FCA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A79885C8F935E104F0ECCA12 /* Project object */;
+}
