@@ -32,6 +32,7 @@ Launch arguments for testing:
 | Argument | Effect |
 | --- | --- |
 | `-simSway` | The simulated phone sways by itself. |
+| `-fakeRadio` | Synthetic Bluetooth radios, Wi-Fi and 5G stand in for the real radio (the Simulator has no Bluetooth). |
 | `-fakeMic` | A synthetic room (a swelling chord plus a clap every 1.6 s) stands in for the microphone. |
 | `-fakeAR` | Without world tracking, a synthetic camera and room stand in for ARKit. |
 | `-startMic` | Turns the microphone on at launch. |
@@ -53,6 +54,7 @@ Launch arguments for testing:
     - Finish: titanium's own reflectance (0.54/0.50/0.45), with no tint or anodising.
     - Brushing: grooves run around the axis, so highlights and reflections streak radially across the disc and lengthwise along the stem. Fine lathe tool-marks show up close.
   - *Planet:* a banded, ringed gas giant on a glowing axis. Its storm smears into a band at speed.
+- **Lock** (padlock, first in the toolbar): tares the bubble's gravity where the phone is now. While locked, the phone's turning is ignored and gravity stays fixed relative to the bubble, so you can hold it at any angle (shakes still count); the world sky freezes too. Tap again to let go: the bubble snaps back to real gravity instantly, and the gyroscope, which kept its relation to the tared gravity, sits that way in real gravity.
 - **Magnetic field lines** (Layers, on by default) appear once Magnet is turned up.
   - They trace the field your magnetometer measures through the bubble and the space around it, and bend around the rotor's own dipole.
   - They brighten with the knob, crowd together as the field strengthens (line spacing follows field strength, so a real magnet visibly packs them), and pulse along the direction of B.
@@ -61,11 +63,22 @@ Launch arguments for testing:
   - The bubble floats 45 cm in front of the phone, so swinging the phone swings the gyroscope, including the lever arm's centripetal and tangential pull.
   - **Place** (or tap a surface) sets it on a table or wall, or leaves it in mid-air. Walk around it and pinch to resize; **Pick up** carries it again.
   - The metal reflects your actual room through ARKit's environment maps, and the bubble's rim lenses the camera image.
-- **Sound page** (console tabs): turn on the mic and the bubble draws an oscilloscope.
+- **Signals tab** (console): turn on the mic and the bubble draws an oscilloscope.
   - **Scope:** a rotary switch for *Ring* (waveform around the horizon), *Trace* (triggered, with a graticule) or *XY* (delay embedding).
   - **Listen:** modulation depth.
   - **Drives:** a rotary switch for what sound pushes on. *Gravity* adds up to 2 g, *Air* thickens and stirs it, *Spin* pushes the rotor like wind on a pinwheel, *Kicks* turns claps and beats into nods, and *Film* makes the bubble shiver and ripple.
   - **Gain:** sensitivity.
+  - **Visual:** a rotary switch for the spectrum visualiser, *Radial* (a spectrum halo bursting from the bubble's rim, mirrored, lows at the top, with peak holds), *Spectral* (a ridge-line waterfall across the bubble's floor, newest at the front) or *Music* (bass, mid and treble halos around the rotor that ripple with their slice of the spectrum, plus a shockwave and a film ripple on every beat).
+  - **Radio:** the radio around you, drawn around the bubble and allowed to modulate the gyroscope.
+    - **Sources:** nearby Bluetooth LE radios become emitters (rings for Apple, diamonds for others), closer for a stronger signal. Directions are symbolic. The Wi-Fi and cellular links the phone is using pulse steadily.
+    - **Live colours** (`RadioColor`):
+      - *Hue:* place in the spectrum, low to high. EMF sits red, shifting with its measured flicker frequency. Bluetooth runs amber to cyan by each radio's measured beacon rate. Cellular is LTE, then 5G; Wi-Fi is violet.
+      - *Saturation and brightness:* current strength, from weak and pale to white-hot.
+      - *Location:* bearing nudges the hue; higher sources run cooler.
+      - *Waves:* they thin as they spread, losing strength and so colour. Packet streams blend into the rotor's glow.
+    - **Waves:** each packet sends a wavefront in. When it reaches the rotor it nudges it (a few percent of its angular momentum), flashes its glow in the emitter's colour, ticks a haptic, and wobbles the hum's pitch.
+    - **EMF:** flicker in the magnetometer shimmers around the rotor.
+    - **Limits:** iOS doesn't allow Wi-Fi scanning or reading Wi-Fi or cellular signal strength, and never reports a signal's direction.
   - The modulation follows loudness above the room's own background, so a steady hum, including the rotor's own, fades out.
 
 | Knob | What it does |
@@ -138,6 +151,14 @@ The film colours are thin-film interference in a soap film that drains toward th
 - **Glass orb:** needs what's inside it, so the scene pass splits in two. Everything inside the orb (gyroscope, far walls, the object's own glow lines) is drawn first. It is then copied into a mipmapped texture, which the orb's near face samples with per-channel refraction offsets for dispersion and abrasion-driven mip blur for frost. Lines outside the orb and the bubble's near wall follow. In AR the orb also refracts the camera image.
 
 **Field lines** (`HoloSceneBuilder.fieldLines`): seeds on a hexagonal grid across the plane through the bubble perpendicular to the measured field, with spacing ∝ 1/√|B|. Each line is traced both ways with midpoint steps through B_measured plus a drawing-scale rotor dipole along the spin axis. Lines fade beyond about 1.1 bubble radii and near the viewer.
+
+**Spectrum** (`Sensors/Spectrum.swift`): a Hann-windowed 2048-point vDSP FFT in 48 log-spaced bands (45 Hz to 15 kHz), with decibel levels, fast attack and slow release, and peak holds.
+
+**Radio** (`Sensors/RadioSense.swift`):
+- **Bluetooth:** CoreBluetooth scans with duplicates allowed, for RSSI and packet timing. At most one wave per radio every 1.5 s; the 24 strongest radios are kept, and identifiers are kept for 10 s and never stored.
+- **Network:** `NWPathMonitor` reports Wi-Fi or cellular; `CTTelephonyNetworkInfo` reports the cellular generation.
+- **EMF:** the RMS deviation of |B| from its half-second mean.
+- **Testing:** `-fakeRadio` synthesises eleven radios.
 
 **AR** (`Sensors/ARController.swift`): ARKit world tracking feeds the same Metal pipeline. The captured YCbCr image is decoded under the scene, and ARKit's projection replaces the phone camera; depth direction is detected per frame. While the bubble is carried, its frame is the phone's, and the physics adds the lever arm. Once placed it is anchored and upright, and the physics frame is the room.
 

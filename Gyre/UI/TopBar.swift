@@ -14,11 +14,22 @@ struct TopBar: View {
         Spacer(minLength: 0)
         HStack(spacing: 0) {
           Button {
+            withAnimation(.spring(duration: 0.3, bounce: 0.4)) { model.toggleLock() }
+          } label: {
+            Image(systemName: model.locked ? "lock.fill" : "lock.open")
+              .font(.body.weight(.semibold))
+              .foregroundStyle(model.locked ? Color(red: 1.0, green: 0.78, blue: 0.3) : .white)
+              .frame(width: 38, height: 44)
+              .contentTransition(.symbolEffect(.replace))
+          }
+          .accessibilityLabel(model.locked ? "Unlock gravity" : "Lock gravity here")
+          .accessibilityHint("Freezes the bubble's orientation so you can hold the phone at any angle")
+          Button {
             model.toggleAR()
           } label: {
             Image(systemName: model.ar.isActive ? "xmark" : "arkit")
               .font(.body.weight(.semibold))
-              .frame(width: 42, height: 44)
+              .frame(width: 38, height: 44)
               .contentTransition(.symbolEffect(.replace))
           }
           .accessibilityLabel(model.ar.isActive ? "Leave AR" : "Show in your room")
@@ -29,7 +40,7 @@ struct TopBar: View {
           } label: {
             Image(systemName: "info")
               .font(.body.weight(.semibold))
-              .frame(width: 42, height: 44)
+              .frame(width: 38, height: 44)
           }
           .accessibilityLabel("About Gyre")
         }
@@ -55,7 +66,7 @@ struct TopBar: View {
     } label: {
       Image(systemName: "flask.fill")
         .font(.body.weight(.semibold))
-        .frame(width: 42, height: 44)
+        .frame(width: 38, height: 44)
     }
     .accessibilityLabel("Experiments")
   }
@@ -88,7 +99,7 @@ struct TopBar: View {
     } label: {
       Image(systemName: "square.3.layers.3d")
         .font(.body.weight(.semibold))
-        .frame(width: 42, height: 44)
+        .frame(width: 38, height: 44)
     }
     .accessibilityLabel("Layers and feedback")
   }

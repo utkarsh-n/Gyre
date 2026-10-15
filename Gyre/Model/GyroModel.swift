@@ -20,6 +20,7 @@ struct Telemetry: Equatable {
   var onWiFi = false
   var cellular: String?
   var emf = 0.0
+  var emfHz = 0.0
 }
 
 struct Ripple {
@@ -73,27 +74,54 @@ struct AudioVisuals {
 /// a signal comes from), distance follows signal strength.
 struct RadioEmitter {
   enum Kind { case apple, other, wifi, cellular }
+  var id: UUID?
   var position: V3  // physics world, scene units from the bubble's centre
   var strength: Float  // 0…1
   var kind: Kind
+  /// Where it sits in the spectrum, 0…1, low to high: EMF, Bluetooth (by beacon rate),
+  /// cellular, Wi-Fi.
+  var spectral: Float
 
-  var color: F3 {
-    switch kind {
-    case .apple: F3(0.85, 0.95, 1.0)
-    case .other: F3(1.0, 0.68, 0.3)
-    case .wifi: F3(0.35, 0.65, 1.0)
-    case .cellular: F3(0.8, 0.45, 1.0)
-    }
-  }
+  var color: F3 { RadioColor.of(spectral: spectral, strength: strength, at: position) }
 }
 
 /// A wavefront rolling in from an emitter toward the gyroscope.
 struct RadioWave {
+  var source: UUID?
   var origin: V3
   var start: Double
   var strength: Float
-  var color: F3
+  var spectral: Float
   var hit = false
+}
+
+/// Colours for radio signals. Hue is the signal's place in the spectrum (the same palette
+/// as the audio visualiser), saturation and brightness its strength (weak and pale to
+/// vivid to white-hot), and its location tempers it: bearing nudges the hue, higher
+/// sources run cooler and lower ones warmer.
+enum RadioColor {
+  static func of(spectral x: Float, strength s: Float, at position: V3) -> F3 {
+    let dir = position.unit
+    let bearing = Float(atan2(dir.y, dir.x))
+    let height = Float(dir.z)
+    var c = HoloPalette.spectrum(clamped(x + 0.05 * sin(bearing), 0, 1))
+    let luma = simd_dot(c, F3(0.3, 0.59, 0.11))
+    c = simd_mix(F3(repeating: luma) * 0.75, c, F3(repeating: 0.3 + 0.7 * s))
+    c = simd_mix(c, F3(1, 1, 1), F3(repeating: smoothstep(0.8, 1.0, s) * 0.5))
+    c *= 0.5 + 0.65 * s
+    return c * F3(1 - 0.1 * height, 1, 1 + 0.1 * height)
+  }
+
+  /// Bluetooth by its measured beacon rate: slow pingers amber, rapid ones toward cyan.
+  static func bluetooth(rate: Double) -> Float {
+    0.26 + 0.44 * Float(clamped(log10(max(rate, 0.01) / 0.2) / log10(150), 0, 1))
+  }
+
+  static func cellular(_ generation: String?) -> Float { generation == "5G" ? 0.84 : 0.76 }
+  static let wifi: Float = 0.93
+
+  /// The magnetometer's flicker, from steady to mains-fast: the red end.
+  static func emf(hz: Double) -> Float { 0.02 + 0.14 * Float(clamped(hz / 60, 0, 1)) }
 }
 
 /// The oscilloscope's latest traces, soft-limited to −1…1.
@@ -132,6 +160,11 @@ final class GyroModel {
   var useBarometer = false {
     didSet { useBarometer ? motion.startBarometer() : motion.stopBarometer() }
   }
+  /// Tare: the bubble's orientation, and with it its gravity, is frozen where the phone
+  /// was when locked, so the phone can be held at any angle. Unlocking snaps back to real
+  /// gravity.
+  private(set) var locked = false
+  @ObservationIgnored private var lockAttitude: simd_quatd?
   var paused = false {
     didSet { sim.paused = paused }
   }
@@ -156,8 +189,13 @@ final class GyroModel {
   /// The last wave to reach the rotor: its colour flashes on the rotor's glow.
   @ObservationIgnored private(set) var radioFlash: (color: F3, start: Double)?
   @ObservationIgnored private(set) var emf = 0.0
+  /// How fast the magnetometer's reading flickers, from its zero crossings, Hz.
+  @ObservationIgnored private(set) var emfHz = 0.0
   @ObservationIgnored private var emfMean = 0.0
   @ObservationIgnored private var emfVariance = 0.0
+  @ObservationIgnored private var emfLastSign = 0.0
+  @ObservationIgnored private var emfCrossings = 0
+  @ObservationIgnored private var emfWindow = 0.0
   @ObservationIgnored private var lastHistory = 0.0
   @ObservationIgnored private var carrierDue: [Double] = [0, 0]
   @ObservationIgnored private var radioActivity = 0.0
@@ -280,6 +318,20 @@ final class GyroModel {
     haptics.transient(intensity: 0.5, sharpness: 0.6)
   }
 
+  func toggleLock() {
+    if locked {
+      // Let go: the bubble rejoins the real world at once, and the gyroscope, which kept
+      // its relation to the tared gravity, now sits that way in real gravity.
+      locked = false
+      lockAttitude = nil
+      haptics.transient(intensity: 1, sharpness: 0.25)
+    } else {
+      lockAttitude = sample.attitude
+      locked = true
+      haptics.transient(intensity: 0.75, sharpness: 0.85)
+    }
+  }
+
   func toggleAR() {
     if ar.isActive {
       ar.stop()
@@ -335,6 +387,14 @@ final class GyroModel {
       viewAttitude = ARController.simFromAR * camera
     } else {
       viewAttitude = s.attitude
+    }
+    if locked, let q = lockAttitude {
+      // Tared: the phone's turning is ignored and gravity stays where it was relative to
+      // the bubble. Shakes still count.
+      s = MotionSample(
+        attitude: q, rotationRate: .zero, gravity: q.inverse.act(V3(0, 0, -1)),
+        userAcceleration: s.userAcceleration, magneticField: s.magneticField, fieldCalibrated: s.fieldCalibrated)
+      if arFrame == nil { viewAttitude = q }
     }
     sample = s
     let a = sample.attitude
@@ -420,7 +480,7 @@ final class GyroModel {
         liveSensors: motion.isLive,
         soundLevel: micState == .on ? soundEnvelope : 0,
         radioState: radio.state, radios: radio.devices.count, onWiFi: radio.onWiFi, cellular: radio.cellular,
-        emf: emf)
+        emf: emf, emfHz: emfHz)
     }
   }
 
@@ -528,33 +588,49 @@ final class GyroModel {
     radio.tick(clock)
 
     func place(_ id: UUID, rssi: Double) -> V3 {
-      let u = id.uuid
-      let azimuth = (Double(u.0) * 256 + Double(u.1)) / 65536 * 2 * .pi
-      let elevation = -0.25 + 0.75 * Double(u.2) / 255
-      let distance = 1.25 + clamped((-rssi - 40) / 45, 0, 1)
+      // A stable, well-mixed spot for each radio (FNV-1a over its identifier).
+      var hash: UInt64 = 0xcbf2_9ce4_8422_2325
+      withUnsafeBytes(of: id.uuid) { bytes in
+        for b in bytes {
+          hash ^= UInt64(b)
+          hash = hash &* 0x100_0000_01b3
+        }
+      }
+      let azimuth = Double(hash & 0xFFFF) / 65536 * 2 * .pi
+      let elevation = -0.6 + 1.3 * Double((hash >> 16) & 0xFF) / 255
+      let distance = 1.12 + 0.6 * clamped((-rssi - 40) / 45, 0, 1)
       return V3(cos(elevation) * cos(azimuth), cos(elevation) * sin(azimuth), sin(elevation)) * distance
     }
     func strength(_ rssi: Double) -> Float { Float(clamped((rssi + 100) / 60, 0.05, 1)) }
 
     var next: [RadioEmitter] = radio.devices.values.map {
-      RadioEmitter(position: place($0.id, rssi: $0.rssi), strength: strength($0.rssi), kind: $0.apple ? .apple : .other)
+      RadioEmitter(
+        id: $0.id, position: place($0.id, rssi: $0.rssi), strength: strength($0.rssi), kind: $0.apple ? .apple : .other,
+        spectral: RadioColor.bluetooth(rate: $0.rate))
     }
-    let wifi = RadioEmitter(position: V3(0.62, 0.55, 0.35).unit * 2.1, strength: 0.6, kind: .wifi)
-    let cell = RadioEmitter(position: V3(-0.8, -0.3, 0.5).unit * 2.4, strength: 0.45, kind: .cellular)
+    let wifi = RadioEmitter(position: V3(0.62, 0.55, 0.55).unit * 1.55, strength: 0.6, kind: .wifi, spectral: RadioColor.wifi)
+    let cell = RadioEmitter(
+      position: V3(-0.8, -0.3, 0.75).unit * 1.75, strength: 0.45, kind: .cellular,
+      spectral: RadioColor.cellular(radio.cellular))
     if radio.onWiFi { next.append(wifi) }
     if radio.cellular != nil { next.append(cell) }
     emitters = next
 
     for (id, rssi) in radio.drainPulses() {
-      let kind: RadioEmitter.Kind = radio.devices[id]?.apple == true ? .apple : .other
-      let e = RadioEmitter(position: place(id, rssi: rssi), strength: strength(rssi), kind: kind)
-      radioWaves.append(RadioWave(origin: e.position, start: clock, strength: e.strength, color: e.color))
+      let rate = radio.devices[id]?.rate ?? 1
+      radioWaves.append(
+        RadioWave(
+          source: id, origin: place(id, rssi: rssi), start: clock, strength: strength(rssi),
+          spectral: RadioColor.bluetooth(rate: rate)))
     }
     // The connections the phone is using pulse steadily.
     for (i, carrier) in [(radio.onWiFi, wifi, 1.7), (radio.cellular != nil, cell, 2.6)].enumerated()
     where carrier.0 && clock >= carrierDue[i] {
       carrierDue[i] = clock + carrier.2
-      radioWaves.append(RadioWave(origin: carrier.1.position, start: clock, strength: carrier.1.strength, color: carrier.1.color))
+      radioWaves.append(
+        RadioWave(
+          source: nil, origin: carrier.1.position, start: clock, strength: carrier.1.strength,
+          spectral: carrier.1.spectral))
     }
     if radioWaves.count > 24 { radioWaves.removeFirst(radioWaves.count - 24) }
 
@@ -569,7 +645,7 @@ final class GyroModel {
         // A few percent of the rotor's angular momentum: a shiver and a nod, not a knockout.
         let push = Double(w.strength) * depth * clamped(0.035 * sim.momentum.length, 0.00008, 0.0006)
         sim.applyImpulse(simd_cross(sim.axis, dir).unit * push)
-        radioFlash = (w.color, clock)
+        radioFlash = (RadioColor.of(spectral: w.spectral, strength: w.strength, at: w.origin), clock)
         radioActivity = min(radioActivity + Double(w.strength) * 0.5, 2)
         haptics.transient(intensity: Float(0.15 + 0.3 * depth) * w.strength, sharpness: 0.95, minGap: 0.1)
       }
@@ -588,6 +664,19 @@ final class GyroModel {
     let deviation = magnitude - emfMean
     emfVariance += (deviation * deviation - emfVariance) * (1 - exp(-dt / 0.4))
     emf = emfVariance.squareRoot()
+    // Flicker frequency: zero crossings of the deviation, two per cycle, over half-second
+    // windows. Readings come at 120 Hz, so it tops out near 60 Hz.
+    let sign: Double = deviation >= 0 ? 1 : -1
+    if sign != emfLastSign, abs(deviation) > emf * 0.2 {
+      emfCrossings += 1
+      emfLastSign = sign
+    }
+    emfWindow += dt
+    if emfWindow >= 0.5 {
+      emfHz += (Double(emfCrossings) / 2 / emfWindow - emfHz) * 0.4
+      emfCrossings = 0
+      emfWindow = 0
+    }
   }
 
   /// A beat or a clap knocks the rotor sideways, scaled to its angular momentum.

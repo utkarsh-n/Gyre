@@ -40,7 +40,7 @@ struct InfoSheet: View {
         Section("Signals") {
           info("waveform.path.ecg", "Oscilloscope", "Turn on the mic on the Sound page and the bubble draws what it hears: a ring around the horizon, a triggered trace, or an XY figure. Nothing is recorded or kept.")
           info("chart.bar.xaxis", "Visual", "A spectrum visualiser for the mic: a radial halo around the bubble, a spectral waterfall across its floor, or music-reactive halos and beat shockwaves around the rotor.")
-          info("antenna.radiowaves.left.and.right", "Radio", "Nearby Bluetooth radios, your Wi-Fi and cellular links, and the EMF flicker in the magnetometer, drawn around the bubble. Their waves roll in and nudge the gyroscope. iOS doesn't let apps scan Wi-Fi or read signal strengths, and it never says which direction a signal comes from, so directions are symbolic; distance follows Bluetooth signal strength.")
+          info("antenna.radiowaves.left.and.right", "Radio", "Nearby Bluetooth radios, your Wi-Fi and cellular links, and the EMF flicker in the magnetometer, drawn around the bubble. Their waves roll in and nudge the gyroscope. iOS doesn't let apps scan Wi-Fi or read signal strengths, and it never says which direction a signal comes from, so directions are symbolic; distance follows Bluetooth signal strength. Colours are live: hue is where a signal sits in the spectrum (EMF red, Bluetooth amber to cyan by beacon rate, cellular blue, Wi-Fi violet), vividness its strength, warmth its height.")
           info("ear.fill", "Listen and Drives", "Listen sets how hard sound pushes; Drives picks what it pushes: gravity, air turbulence, the rotor's spin, beat kicks, or the film itself. Only changes in sound count, so a steady hum fades out.")
         }
 

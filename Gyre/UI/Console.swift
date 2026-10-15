@@ -153,7 +153,7 @@ struct KnobConsole: View {
       var parts = ["\(t.radios) Bluetooth"]
       if t.onWiFi { parts.append("Wi-Fi") }
       if let c = t.cellular { parts.append(c) }
-      parts.append(String(format: "EMF %.2f µT", t.emf))
+      parts.append(String(format: "EMF %.2f µT %.0f Hz", t.emf, t.emfHz))
       return parts.joined(separator: " · ")
     }
   }

@@ -332,8 +332,13 @@ struct HoloSceneBuilder {
         billboard(
           c,
           radius: { angle in
-            let idx = Int((angle / (2 * .pi)) * Float(slice.count * 2)) % (slice.count * 2)
-            let band = slice[idx < slice.count ? idx : slice.count * 2 - 1 - idx]
+            // Mirror the slice around the ring and blend between neighbouring bands.
+            let span = Float(slice.count - 1)
+            var x = (angle / (2 * .pi)) * 2
+            if x > 1 { x = 2 - x }
+            let f = min(max(x, 0), 1) * span
+            let i = Int(f)
+            let band = slice[i] + (slice[min(i + 1, slice.count - 1)] - slice[i]) * (f - Float(i))
             return base * (1 + 0.1 * energy * sin(angle * Float(3 + 2 * k) + t * Float(1 + k)) + 0.12 * band)
           }, color: color, alpha: 0.2 + 0.7 * energy, width: 1.6 + 2.2 * energy, segments: 96)
       }
@@ -353,20 +358,33 @@ struct HoloSceneBuilder {
   // MARK: Radio
 
   /// Radio emitters around the bubble, the wavefronts rolling in from them, the flowing
-  /// links that carry them to the rotor, and the EMF shimmer around it.
+  /// links that carry them to the rotor, and the EMF shimmer around it. Every colour is
+  /// live: spectral position, current strength and location (see `RadioColor`).
   private mutating func radioField(
     model m: GyroModel, toPhone: (V3) -> F3, rotorCenter c: F3, rotorRadius r: Float, time t: Float
   ) {
     let depth = Float(m.sound.radio)
     let visibility = smoothstep(0, 0.6, depth)
+    var live: [UUID: RadioEmitter] = [:]
     for e in m.emitters {
+      if let id = e.id { live[id] = e }
       let p = toPhone(e.position)
       let fade = surroundFade(p, from: 1.6, to: 2.8)
       guard fade > 0.02 else { continue }
       let color = e.color
       point(p, color, size: 3 + 4 * e.strength, alpha: visibility * fade)
-      billboard(p, radius: { _ in 0.035 + 0.02 * e.strength }, color: color, alpha: 0.6 * visibility * fade, width: 1, segments: 16)
-      // Packets stream in toward the rotor.
+      let size = 0.035 + 0.02 * e.strength
+      switch e.kind {
+      case .apple, .wifi, .cellular:
+        billboard(p, radius: { _ in size }, color: color, alpha: 0.6 * visibility * fade, width: 1, segments: 16)
+      case .other:
+        // Other makers' radios get a diamond.
+        billboard(p, radius: { _ in size * 1.2 }, color: color, alpha: 0.6 * visibility * fade, width: 1, segments: 4)
+      }
+      if e.kind == .wifi || e.kind == .cellular {
+        billboard(p, radius: { _ in size * 1.8 }, color: color, alpha: 0.3 * visibility * fade, width: 1, segments: 24)
+      }
+      // Packets stream in toward the rotor, their colour blending into its glow.
       let link = c - p
       let dashes = 7
       for k in 0..<dashes {
@@ -374,25 +392,34 @@ struct HoloSceneBuilder {
         let a0 = p + link * s
         let a1 = p + link * min(s + 0.04, 1)
         let f = surroundFade(a0, from: 1.6, to: 2.8)
-        seg(a0, a1, color, color, alpha: 0.35 * visibility * f * e.strength, width: 1.2)
+        let tint = simd_mix(color, HoloPalette.rotorCore * 0.8, F3(repeating: s * s))
+        seg(a0, a1, tint, tint, alpha: 0.35 * visibility * f * e.strength, width: 1.2)
       }
     }
     for w in m.radioWaves {
       let radius = Float((m.clock - w.start) * GyroModel.radioWaveSpeed)
       let origin = toPhone(w.origin)
       let travel = max(simd_distance(origin, c), 0.1)
-      let alpha = visibility * w.strength * (w.hit ? max(0, 1 - (radius - travel) / 0.5) : 0.25 + 0.55 * min(radius / travel, 1))
+      // A spreading wave thins out: weaker, paler, dimmer as it travels. Its source's
+      // current strength (if it's still heard) keeps its colour live.
+      let source = w.source.flatMap { live[$0] }
+      let spread = 1 / (1 + 1.5 * (radius / travel) * (radius / travel))
+      let strength = (source?.strength ?? w.strength) * spread
+      let color = RadioColor.of(spectral: source?.spectral ?? w.spectral, strength: strength, at: w.origin)
+      let alpha = visibility * w.strength * (w.hit ? max(0, 1 - (radius - travel) / 0.5) : 0.3 + 0.5 * min(radius / travel, 1))
       guard alpha > 0.02 else { continue }
-      billboard(origin, radius: { _ in radius }, color: w.color, alpha: alpha * 0.55, width: 1.2, segments: 96, fade: true)
+      billboard(origin, radius: { _ in radius }, color: color, alpha: alpha * 0.8, width: 1.3, segments: 96, fade: true)
     }
-    // EMF: the magnetometer's flicker shimmers around the rotor.
+    // EMF: the magnetometer's flicker shimmers around the rotor, coloured by how fast it
+    // flickers and how strong it is.
     let emf = Float(min(m.emf / 0.6, 1))
     if emf > 0.02 {
+      let color = RadioColor.of(spectral: RadioColor.emf(hz: m.emfHz), strength: 0.35 + 0.65 * emf, at: V3(0, 0, 0.3))
       billboard(
         c,
         radius: { angle in
           r * 1.55 * (1 + 0.12 * emf * sin(angle * 23 + t * 41) * sin(angle * 7 - t * 17))
-        }, color: HoloPalette.emf, alpha: 0.15 + 0.5 * emf * visibility, width: 1.2, segments: 120)
+        }, color: color, alpha: 0.15 + 0.5 * emf * visibility, width: 1.2, segments: 120)
     }
   }
 
